@@ -4,6 +4,7 @@ import com.shopping.micro.goods.cro.GoodsAllCro;
 import com.shopping.micro.goods.cro.GoodsCro;
 import com.shopping.micro.goods.entity.Goods;
 import com.shopping.micro.goods.exception.MyShopException;
+import com.shopping.micro.goods.remote.FeignUserService;
 import com.shopping.micro.goods.service.GoodsService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;

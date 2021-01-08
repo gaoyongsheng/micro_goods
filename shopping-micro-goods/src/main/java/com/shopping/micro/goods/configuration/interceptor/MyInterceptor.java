@@ -1,24 +1,36 @@
 package com.shopping.micro.goods.configuration.interceptor;
 
 
+import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONObject;
 import com.shopping.micro.goods.constants.ShopExceptionCode;
+import com.shopping.micro.goods.entity.User;
+import com.shopping.micro.goods.exception.MyShopException;
+import com.shopping.micro.goods.service.GoodsService;
+import com.shopping.micro.goods.utils.EncryptUtils;
 import com.shopping.micro.goods.utils.ResponseUtils;
+import com.shopping.micro.goods.utils.ThreadLocalUtils;
 import com.shopping.micro.goods.utils.Util;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.servlet.HandlerInterceptor;
 import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.util.Iterator;
+import java.util.LinkedHashMap;
+import java.util.Map;
+import java.util.Set;
 
 public class MyInterceptor implements HandlerInterceptor {
 
     private static final Logger LOG = LoggerFactory.getLogger(MyInterceptor.class);
 
-//    @Autowired
-//    private UserService userService;
+    @Autowired
+    GoodsService goodsService;
 
     /*{
         content-type:application/json,
@@ -41,17 +53,21 @@ public class MyInterceptor implements HandlerInterceptor {
             LOG.info("************reqBody**************[{}]",reqBody);
 
 //          校验签名是否正确
-//            User curUser = userService.findCurUserByUserNameOrMobile(serviceId);
-//
-//            LOG.info("************curLoginUser*********[{}]",curUser.toString());
-//
-//            String signStr = serviceId + curUser.getPassword() + ts;
-//            if(signInfo.equals(EncryptUtils.shaEncode(signStr))){
-//                ThreadLocalUtils.set(curUser);
+
+
+            JSONObject result = goodsService.getCurLoginUser(serviceId);
+
+            JSONObject curJson = result.getJSONObject("data");
+            User curUser = JSON.toJavaObject(curJson,User.class);
+            LOG.info("************curLoginUser*********[{}]",curUser.toString());
+
+            String signStr = serviceId + curUser.getPassword() + ts;
+            if(signInfo.equals(EncryptUtils.shaEncode(signStr))){
+                ThreadLocalUtils.set(curUser);
                 return true;
-//            } else {
-//                throw new MyShopException(ShopExceptionCode.SIGNATURE_ERROR,"签名错误");
-//            }
+            } else {
+                throw new MyShopException(ShopExceptionCode.SIGNATURE_ERROR,"签名错误");
+            }
 
         } catch (Exception e) {
             e.printStackTrace();

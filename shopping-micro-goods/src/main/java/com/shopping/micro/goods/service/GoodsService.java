@@ -1,5 +1,6 @@
 package com.shopping.micro.goods.service;
 
+import com.alibaba.fastjson.JSONObject;
 import com.shopping.micro.goods.cro.GoodsAllCro;
 import com.shopping.micro.goods.cro.GoodsCro;
 import com.shopping.micro.goods.entity.Goods;
@@ -79,4 +80,5 @@ public interface GoodsService {
     Goods editGoods(GoodsCro goodsCro);
 
 
+    JSONObject getCurLoginUser(String serviceId);
 }

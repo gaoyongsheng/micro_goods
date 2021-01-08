@@ -1,5 +1,6 @@
 package com.shopping.micro.goods.service.impl;
 
+import com.alibaba.fastjson.JSONObject;
 import com.shopping.micro.goods.constants.ShopExceptionCode;
 import com.shopping.micro.goods.cro.GoodsAllCro;
 import com.shopping.micro.goods.cro.GoodsCro;
@@ -7,6 +8,7 @@ import com.shopping.micro.goods.entity.FilesRes;
 import com.shopping.micro.goods.entity.Goods;
 import com.shopping.micro.goods.entity.User;
 import com.shopping.micro.goods.exception.MyShopException;
+import com.shopping.micro.goods.remote.FeignUserService;
 import com.shopping.micro.goods.repository.GoodsRepository;
 import com.shopping.micro.goods.service.FilesResService;
 import com.shopping.micro.goods.service.GoodsService;
@@ -36,6 +38,14 @@ public class GoodsServiceImpl extends AbstractBaseImpl implements GoodsService {
 
     @Autowired
     FilesResService filesResService;
+
+    @Autowired
+    FeignUserService feignUserService;
+
+    public JSONObject getCurLoginUser(String str){
+
+        return feignUserService.findUserByUserNameOrMobile(str);
+    }
 
     @Override
     public void addOneGoods(GoodsCro goodsCro) {
