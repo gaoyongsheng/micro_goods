@@ -20,6 +20,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 @Component
 @FeignClient(name = "shopping-micro-user", configuration= FeignConfiguration.class)
+//        fallback = FeignUserFallBack.class
 public interface FeignUserService {
 
     @ResponseBody

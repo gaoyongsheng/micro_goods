@@ -54,15 +54,17 @@ public class MyInterceptor implements HandlerInterceptor {
 
 //          校验签名是否正确
 
-
             JSONObject result = goodsService.getCurLoginUser(serviceId);
+            LOG.info("************curLoginUser*********[{}]",result.toString());
 
             JSONObject curJson = result.getJSONObject("data");
             User curUser = JSON.toJavaObject(curJson,User.class);
-            LOG.info("************curLoginUser*********[{}]",curUser.toString());
 
             String signStr = serviceId + curUser.getPassword() + ts;
-            if(signInfo.equals(EncryptUtils.shaEncode(signStr))){
+            String strEncode = EncryptUtils.shaEncode(signStr);
+
+            LOG.info("************curSignInfo**********[{}]",strEncode);
+            if(signInfo.equals(strEncode)){
                 ThreadLocalUtils.set(curUser);
                 return true;
             } else {
