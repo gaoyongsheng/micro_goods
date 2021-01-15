@@ -3,6 +3,7 @@ package com.shopping.micro.goods.controller;
 import com.shopping.micro.goods.cro.GoodsAllCro;
 import com.shopping.micro.goods.cro.GoodsCro;
 import com.shopping.micro.goods.entity.Goods;
+import com.shopping.micro.goods.entity.User;
 import com.shopping.micro.goods.exception.MyShopException;
 import com.shopping.micro.goods.remote.FeignUserService;
 import com.shopping.micro.goods.service.GoodsService;
@@ -25,6 +26,12 @@ public class GoodsController extends AbstractBaseCtrl {
     @Autowired
     GoodsService goodsService;
 
+    @GetMapping("/user.findById/{str}")
+    public Object findUserById(@PathVariable("str") String str){
+
+        return goodsService.getCurLoginUser(str);
+    }
+
     @PostMapping("/goods.addone")
     public Object addOne(@RequestBody GoodsCro goodsCro){
         goodsService.addOneGoods(goodsCro);
@@ -39,11 +46,11 @@ public class GoodsController extends AbstractBaseCtrl {
 
     @GetMapping("/goods.findById/{id}")
     public Object findGoodsById(@PathVariable("id") Long id){
-        try{
+//        try{
             return success(goodsService.findGoodsById(id));
-        } catch (MyShopException ex){
-            return failure(ex.getErrorCode(),ex.getMessage());
-        }
+//        } catch (MyShopException ex){
+//            return failure(ex.getErrorCode(),ex.getMessage());
+//        }
     }
 
     @PostMapping("/goods.findAll")

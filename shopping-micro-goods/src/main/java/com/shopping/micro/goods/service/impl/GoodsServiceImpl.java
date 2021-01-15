@@ -14,6 +14,7 @@ import com.shopping.micro.goods.service.FilesResService;
 import com.shopping.micro.goods.service.GoodsService;
 import com.shopping.micro.goods.utils.DateTimeUtils;
 import com.shopping.micro.goods.utils.ThreadLocalUtils;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -29,6 +30,7 @@ import java.util.List;
  * @Version 1.0
  */
 
+@Slf4j
 @Service
 @Transactional
 public class GoodsServiceImpl extends AbstractBaseImpl implements GoodsService {
@@ -43,7 +45,6 @@ public class GoodsServiceImpl extends AbstractBaseImpl implements GoodsService {
     FeignUserService feignUserService;
 
     public JSONObject getCurLoginUser(String str){
-
         return feignUserService.findUserByUserNameOrMobile(str);
     }
 

@@ -23,6 +23,16 @@ public class MyFilter implements Filter{
         HttpServletRequest httpServletRequest = (HttpServletRequest)servletRequest;
         MyRequestWrapper myRequestWrapper = new MyRequestWrapper(httpServletRequest);
         filterChain.doFilter(myRequestWrapper,servletResponse);
+//        注册过滤器时，ExceptionFilter排序要再其他过滤器之前
+//        // 简单实现异常过滤Filter
+//        try {
+//            filterChain.doFilter(myRequestWrapper,servletResponse);
+//        } catch (Exception e) {
+//            // 异常捕获，发送到error controller
+//            servletRequest.setAttribute("filter.error", e);
+//            //将异常分发到/error/exthrow控制器
+//            servletRequest.getRequestDispatcher("/error/exthrow").forward(servletRequest, servletResponse);
+//        }
     }
 
     @Override

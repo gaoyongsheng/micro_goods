@@ -15,8 +15,12 @@ public class InterceptorConfiguration implements WebMvcConfigurer {
 
     @Override
     public void addInterceptors(InterceptorRegistry registry) {
+        // addPathPatterns 添加拦截规则
+        // excludePathPatterns 排除拦截
+
         // 添加拦截器，配置拦截地址
-        registry.addInterceptor(myInterceptor()).addPathPatterns("/service/**")
+        registry.addInterceptor(myInterceptor())
+            .addPathPatterns("/service/**")
             .excludePathPatterns(           // 个人注册相关接口
                     "/service/v1/user.register" // 个人注册
             );

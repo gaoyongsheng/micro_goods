@@ -19,8 +19,8 @@ import org.springframework.web.bind.annotation.ResponseBody;
 //此类中的方法和远程服务中contoller中的方法名和参数需保持一致
 
 @Component
-@FeignClient(name = "shopping-micro-user", configuration= FeignConfiguration.class)
-//        fallback = FeignUserFallBack.class
+@FeignClient(name = "shopping-micro-user", configuration= FeignConfiguration.class, fallback = FeignUserFallBack.class)
+
 public interface FeignUserService {
 
     @ResponseBody

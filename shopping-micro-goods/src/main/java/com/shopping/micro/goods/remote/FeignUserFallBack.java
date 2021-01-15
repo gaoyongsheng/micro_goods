@@ -15,7 +15,7 @@ public class FeignUserFallBack implements FeignUserService {
     @Override
     public JSONObject findUserByUserNameOrMobile(String str) {
         JSONObject jsonObject = new JSONObject();
-        jsonObject.put("code","111111");
+        jsonObject.put("code","999999");
         jsonObject.put("msg","微服务异常");
         jsonObject.put("data","str");
         return jsonObject;

@@ -20,6 +20,7 @@ import org.springframework.web.servlet.ModelAndView;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.io.PrintWriter;
 import java.util.Iterator;
 import java.util.LinkedHashMap;
 import java.util.Map;
@@ -42,7 +43,6 @@ public class MyInterceptor implements HandlerInterceptor {
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws IOException {
 
         try {
-
             String serviceId = request.getHeader("serviceId").trim();
             String signInfo = request.getHeader("signInfo").trim();
             String ts = request.getHeader("ts").trim();
@@ -53,7 +53,6 @@ public class MyInterceptor implements HandlerInterceptor {
             LOG.info("************reqBody**************[{}]",reqBody);
 
 //          校验签名是否正确
-
             JSONObject result = goodsService.getCurLoginUser(serviceId);
             LOG.info("************curLoginUser*********[{}]",result.toString());
 
@@ -68,14 +67,13 @@ public class MyInterceptor implements HandlerInterceptor {
                 ThreadLocalUtils.set(curUser);
                 return true;
             } else {
-                throw new MyShopException(ShopExceptionCode.SIGNATURE_ERROR,"签名错误");
+                return errorWrite(response,ShopExceptionCode.SIGNATURE_ERROR);
             }
 
         } catch (Exception e) {
             e.printStackTrace();
-            response.sendError(500);
-            ResponseUtils.failure(ShopExceptionCode.SIGNATURE_ERROR,"签名错误");
-            return false;
+//            response.sendError(500);
+            return errorWrite(response,"999999");
         }
 
     }
@@ -88,6 +86,24 @@ public class MyInterceptor implements HandlerInterceptor {
     @Override
     public void afterCompletion(HttpServletRequest request, HttpServletResponse response, Object handler, Exception ex) throws Exception {
         LOG.info("afterCompletion");
+    }
+
+    /**
+     * 错误拦截处理.
+     *
+     * @param resp      返回对象.
+     * @param errorCode 错误码
+     * @return false
+     * @throws IOException
+     * @author BianJiashuai
+     * @date 2018年7月6日 下午8:25:16
+     */
+    private boolean errorWrite(HttpServletResponse resp, String errorCode) throws IOException {
+        resp.setCharacterEncoding("UTF-8");
+        resp.setContentType("application/json; charset=utf-8");
+        PrintWriter pw = resp.getWriter();
+        pw.write(ResponseUtils.failure(errorCode,"签名错误").toString());
+        return false;
     }
 
 }
